@@ -29,6 +29,9 @@ local dialog = Dialog.new({
     choice_selected_color = {1, 1, 0.8, 1},
     font_size = 18,
     dialog_height = 120,
+    dialog_max_width = 800,    -- Limit dialog width to 800px
+    dialog_margin_x = 50,      -- 50px margins from screen edges
+    dialog_margin_y = 20,      -- 20px margin from bottom
     show_background = true
 })
 
@@ -76,7 +79,7 @@ function love.mousemoved(x, y)
 end
 ```
 
-```
+````
 
 ## 📖 Dialog Structure
 
@@ -87,9 +90,10 @@ local dialog_data = {
     name = "Character Name",         -- Optional: character name
     key = "unique_dialog_id"         -- Optional: unique identifier
 }
-```
+````
 
 ### Dialog with Choices
+
 ```lua
 local branching_dialog = {
     text = "What would you like to do?",
@@ -104,7 +108,7 @@ local branching_dialog = {
             }
         },
         {
-            text = "Option 2", 
+            text = "Option 2",
             key = "choice2",
             callback = function(key, value)
                 -- Handle choice selection
@@ -128,26 +132,29 @@ local branching_dialog = {
 local config = {
     -- Text animation
     text_speed = 0.03,                    -- Seconds per character
-    
+
     -- Colors (RGBA format)
     background_color = {0.1, 0.1, 0.2, 0.9},
     text_color = {0.9, 0.9, 1, 1},
     name_color = {1, 0.8, 0.6, 1},
     choice_color = {0.7, 0.9, 1, 1},
     choice_selected_color = {1, 1, 0.8, 1},
-    
+
     -- Fonts
     font_size = 18,
     name_font_size = 22,
     font_path = "path/to/font.ttf",       -- Optional custom font
     name_font_path = "path/to/bold.ttf",  -- Optional custom name font
-    
+
     -- Layout
     padding = 20,
     dialog_height = 120,
+    dialog_max_width = 800,               -- Maximum dialog width (nil = full screen)
+    dialog_margin_x = 50,                 -- Horizontal margins from screen edges
+    dialog_margin_y = 20,                 -- Vertical margin from bottom
     name_position = "top",                -- "top", "left", "none"
     show_background = true,               -- Enable/disable default background
-    
+
     -- Custom rendering callbacks
     custom_background_draw = function(dialog, x, y, width, height)
         -- Custom background rendering
@@ -167,11 +174,13 @@ local config = {
 ## 🎮 Controls
 
 ### Keyboard
+
 - **↑/↓ Arrow Keys**: Navigate choices
 - **Enter/Space**: Select choice or skip text animation
 - **Escape**: Close dialog
 
 ### Mouse
+
 - **Click**: Select choice or skip text animation
 - **Hover**: Highlight choices
 - **Move**: Update selection
@@ -179,6 +188,7 @@ local config = {
 ## 🌟 Advanced Examples
 
 ### Complex Branching Dialog
+
 ```lua
 local complex_dialog = {
     text = "Welcome to the adventure! What's your class?",
@@ -202,7 +212,7 @@ local complex_dialog = {
         },
         {
             text = "Mage",
-            key = "mage", 
+            key = "mage",
             value = {class = "mage", mp = 100},
             next = function()
                 -- Dynamic dialog based on game state
@@ -224,6 +234,7 @@ local complex_dialog = {
 ```
 
 ### Custom Rendering
+
 ```lua
 local custom_dialog = Dialog.new({
     show_background = false,
@@ -231,7 +242,7 @@ local custom_dialog = Dialog.new({
         -- Draw custom background with gradient
         love.graphics.setColor(0.2, 0.1, 0.3, 0.8)
         love.graphics.rectangle("fill", x, y, width, height)
-        
+
         -- Add border
         love.graphics.setColor(0.6, 0.4, 0.8, 1)
         love.graphics.setLineWidth(2)
@@ -249,36 +260,47 @@ local custom_dialog = Dialog.new({
 ### Dialog Methods
 
 #### `Dialog.new(config?)`
+
 Creates a new dialog instance with optional configuration.
 
 #### `dialog:start(dialog_data, callback?)`
+
 Starts a dialog with the given data and optional completion callback.
 
 #### `dialog:update(dt)`
+
 Updates the dialog animation. Call this in `love.update(dt)`.
 
 #### `dialog:draw()`
+
 Renders the dialog. Call this in `love.draw()`.
 
 #### `dialog:keypressed(key)`
+
 Handles keyboard input. Call this in `love.keypressed(key)`.
 
 #### `dialog:mousepressed(x, y, button)`
+
 Handles mouse clicks. Call this in `love.mousepressed(x, y, button)`.
 
 #### `dialog:mousemoved(x, y)`
+
 Handles mouse movement for choice highlighting. Call this in `love.mousemoved(x, y)`.
 
 #### `dialog:isActive()`
+
 Returns true if dialog is currently active.
 
 #### `dialog:close()`
+
 Manually closes the dialog.
 
 #### `dialog:setConfig(config)`
+
 Updates dialog configuration.
 
 #### `dialog:skipTextAnimation()`
+
 Immediately shows full text, skipping animation.
 
 ## 📄 License

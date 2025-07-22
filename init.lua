@@ -27,8 +27,11 @@
 ---@field name_font_size number? Name font size
 ---@field font_path string? Path to text font (nil = default font)
 ---@field name_font_path string? Path to name font (nil = default font)
----@field padding number? Padding
+---@field padding number? Padding inside dialog box
 ---@field dialog_height number? Dialog window height
+---@field dialog_max_width number? Maximum width of dialog box (nil = full screen width)
+---@field dialog_margin_x number? Horizontal margin from screen edges
+---@field dialog_margin_y number? Vertical margin from screen edges
 ---@field show_background boolean? Show default background
 ---@field name_position "top"|"left"|"none"? Name position
 ---@field custom_background_draw fun(dialog: Dialog, x: number, y: number, width: number, height: number)? Custom background draw
@@ -71,6 +74,9 @@ local DEFAULT_CONFIG = {
 	name_font_path = nil,
 	padding = 20,
 	dialog_height = 120, -- Smaller dialog height
+	dialog_max_width = nil, -- Maximum dialog width (nil = full screen width)
+	dialog_margin_x = 0, -- Horizontal margin from screen edges
+	dialog_margin_y = 0, -- Vertical margin from screen edges
 	show_background = true,
 	name_position = "top",
 	custom_background_draw = nil,
@@ -261,10 +267,14 @@ function Dialog:draw()
 	local old_font = love.graphics.getFont()
 	local old_color = { love.graphics.getColor() }
 
-	local dialog_x = 0
-	local dialog_y = screen_height - self.config.dialog_height
-	local dialog_width = screen_width
+	-- Calculate dialog dimensions with margins and max width
+	local available_width = screen_width - (self.config.dialog_margin_x * 2)
+	local dialog_width = self.config.dialog_max_width and math.min(self.config.dialog_max_width, available_width)
+		or available_width
+
 	local dialog_height = self.config.dialog_height
+	local dialog_x = (screen_width - dialog_width) / 2
+	local dialog_y = screen_height - dialog_height - self.config.dialog_margin_y
 
 	-- Custom background draw or default
 	if self.config.custom_background_draw then
@@ -273,7 +283,7 @@ function Dialog:draw()
 		self:_drawDefaultBackground(dialog_x, dialog_y, dialog_width, dialog_height)
 	end
 
-	local text_x = self.config.padding
+	local text_x = dialog_x + self.config.padding
 	local text_y = dialog_y + self.config.padding
 
 	-- Custom name draw or default
@@ -291,9 +301,9 @@ function Dialog:draw()
 
 	-- Custom text draw or default
 	if self.config.custom_text_draw then
-		self.config.custom_text_draw(self, self.displayed_text, text_x, text_y, screen_width - self.config.padding * 2)
+		self.config.custom_text_draw(self, self.displayed_text, text_x, text_y, dialog_width - self.config.padding * 2)
 	else
-		self:_drawDefaultText(self.displayed_text, text_x, text_y, screen_width - self.config.padding * 2)
+		self:_drawDefaultText(self.displayed_text, text_x, text_y, dialog_width - self.config.padding * 2)
 	end
 
 	-- Custom choices draw or default (centered on screen)
@@ -304,7 +314,7 @@ function Dialog:draw()
 				self.choices,
 				text_x,
 				text_y + self.font:getHeight() * 3,
-				screen_width - self.config.padding * 2
+				dialog_width - self.config.padding * 2
 			)
 		else
 			self:_drawDefaultChoices()
