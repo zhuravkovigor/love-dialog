@@ -4,20 +4,20 @@
 ---@meta
 
 ---@class DialogConfig
----@field text_speed? number Speed of text appearance (seconds per character, default: 0.05)
----@field background_color? table RGBA color for dialog background (default: {0.2, 0.2, 0.2, 0.8})
----@field text_color? table RGBA color for dialog text (default: {1, 1, 1, 1})
----@field name_color? table RGBA color for character name (default: {1, 1, 0.5, 1})
----@field choice_color? table RGBA color for choice options (default: {0.8, 0.8, 1, 1})
----@field choice_selected_color? table RGBA color for selected choice (default: {1, 1, 1, 1})
----@field font_size? number Font size for dialog text (default: 16)
----@field name_font_size? number Font size for character name (default: 20)
----@field font_path? string Path to custom font for text (nil = default font)
----@field name_font_path? string Path to custom font for name (nil = default font)
+---@field textSpeed? number Speed of text appearance (seconds per character, default: 0.05)
+---@field backgroundColor? table RGBA color for dialog background (default: {0.2, 0.2, 0.2, 0.8})
+---@field textColor? table RGBA color for dialog text (default: {1, 1, 1, 1})
+---@field nameColor? table RGBA color for character name (default: {1, 1, 0.5, 1})
+---@field choiceColor? table RGBA color for choice options (default: {0.8, 0.8, 1, 1})
+---@field choiceSelectedColor? table RGBA color for selected choice (default: {1, 1, 1, 1})
+---@field fontSize? number Font size for dialog text (default: 16)
+---@field nameFontSize? number Font size for character name (default: 20)
+---@field fontPath? string Path to custom font for text (nil = default font)
+---@field nameFontPath? string Path to custom font for name (nil = default font)
 ---@field padding? number Padding inside dialog box (default: 20)
----@field dialog_height? number Height of dialog box (default: 150)
----@field show_background? boolean Show default background (default: true)
----@field name_position? "top"|"left"|"none" Position of character name (default: "top")
+---@field dialogHeight? number Height of dialog box (default: 150)
+---@field showBackground? boolean Show default background (default: true)
+---@field namePosition? "top"|"left"|"none" Position of character name (default: "top")
 
 ---@class DialogChoice
 ---@field text string Text to display for this choice
